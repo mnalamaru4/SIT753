@@ -48,7 +48,7 @@ pipeline {
             // Send email notifications after pipeline execution
             emailext body: "Pipeline ${currentBuild.result}: ${env.BUILD_URL}",
                      subject: "Pipeline ${currentBuild.result}: ${env.JOB_NAME}",
-                     to: 's222315268@deakin.edu.au'
+                     to: 's222315268@deakin.edu.au, mnalamaru4@gmail.com'
         }
     }
 }
