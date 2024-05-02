@@ -1,43 +1,44 @@
 pipeline {
     agent any
+    
+    environment {
+        DIRECTORY_PATH = "/path/to/code"
+        TESTING_ENVIRONMENT = "JENKINS"
+        PRODUCTION_ENVIRONMENT = "MAHIDHAR"
+    }
+    
     stages {
         stage('Build') {
             steps {
-                // Use Maven to build the code
-                sh 'mvn clean package'
+                echo "Fetching the source code from the directory path specified by the environment variable: ${DIRECTORY_PATH}"
+                echo "Compiling the code and generating any necessary artifacts..."
             }
         }
-        stage('Unit and Integration Tests') {
+        stage('Test') {
             steps {
-                // Use JUnit for unit tests and tools like Selenium or Postman for integration tests
-                // Execute tests and report results
+                echo "Running unit tests..."
+                echo "Running integration tests..."
             }
         }
-        stage('Code Analysis') {
+        stage('Code Quality Check') {
             steps {
-                // Use tools like SonarQube or Checkstyle for code analysis
-                // Integrate the analysis results with Jenkins
+                echo "Checking the quality of the code..."
             }
         }
-        stage('Security Scan') {
+        stage('Deploy') {
             steps {
-                // Use tools like OWASP ZAP or SonarQube for security scanning
-                // Integrate the scanning results with Jenkins
+                echo "Deploying the application to a testing environment specified by the environment variable: ${TESTING_ENVIRONMENT}"
             }
         }
-        stage('Deploy to Staging') {
+        stage('Approval') {
             steps {
-                // Deploy the application to a staging server (e.g., using SSH or Docker)
-            }
-        }
-        stage('Integration Tests on Staging') {
-            steps {
-                // Run integration tests on the staging environment
+                echo "Waiting for manual approval..."
+                sleep(time: 10, unit: 'SECONDS')
             }
         }
         stage('Deploy to Production') {
             steps {
-                // Deploy the application to a production server
+                echo "Deploying the code to the production environment (${PRODUCTION_ENVIRONMENT})..."
             }
         }
     }
