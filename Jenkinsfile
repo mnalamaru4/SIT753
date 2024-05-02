@@ -51,7 +51,7 @@ pipeline {
             // Send email notifications after pipeline execution
             emailext body: "Pipeline ${currentBuild.result}: ${env.BUILD_URL}",
                      subject: "Pipeline ${currentBuild.result}: ${env.JOB_NAME}",
-                     to: 'your@email.com'
+                     to: 'mnalamaru4@gmail.com'
         }
     }
 }
