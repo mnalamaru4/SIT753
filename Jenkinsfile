@@ -48,16 +48,16 @@ pipeline {
         }
     }
     
-    post {
-        success {
-            emailext body: "Pipeline ${currentBuild.result}: ${env.BUILD_URL}",
-                     subject: "Pipeline ${currentBuild.result}: ${env.JOB_NAME}",
-                     to: 'your@email.com'
-        }
-        failure {
-            emailext body: "Pipeline ${currentBuild.result}: ${env.BUILD_URL}",
-                     subject: "Pipeline ${currentBuild.result}: ${env.JOB_NAME}",
-                     to: 'mnalamaru4@gmail.com, s222315268@deakin.edu.au'
-        }
+   post {
+    success {
+        emailext body: "Pipeline ${currentBuild.result}: ${env.BUILD_URL}",
+                 subject: "Pipeline ${currentBuild.result}: ${env.JOB_NAME}",
+                 to: 'mnalamaru4@gmail.com'
+    }
+    failure {
+        emailext body: "Pipeline ${currentBuild.result}: ${env.BUILD_URL}",
+                 subject: "Pipeline ${currentBuild.result}: ${env.JOB_NAME}",
+                 to: 'mnalamaru4@gmail.com'
     }
 }
+
