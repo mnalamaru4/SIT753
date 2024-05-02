@@ -48,16 +48,16 @@ pipeline {
         }
     }
     
-    post {
-        success {
-            emailext body: "Pipeline ${currentBuild.result}: ${env.BUILD_URL}",
-                     subject: "Pipeline ${currentBuild.result}: ${env.JOB_NAME}",
-                     to: 'mnalamaru4@gmail.com'
-        }
-        failure {
-            emailext body: "Pipeline ${currentBuild.result}: ${env.BUILD_URL}",
-                     subject: "Pipeline ${currentBuild.result}: ${env.JOB_NAME}",
-                     to: 'mnalamaru4@gmail.com'
+   post {
+        always {
+            script {
+                // Attach log files to the email
+                emailext body: "Pipeline ${currentBuild.result}: ${env.BUILD_URL}",
+                         subject: "Pipeline ${currentBuild.result}: ${env.JOB_NAME}",
+                         to: 'mnalamaru4@gmail.com',
+                         attachLog: true,
+                         attachmentsPattern: '*.txt'
+            }
         }
     }
 }
