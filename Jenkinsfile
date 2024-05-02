@@ -1,54 +1,63 @@
 pipeline {
     agent any
     
-    environment {
-        DIRECTORY_PATH = "/path/to/code"
-        TESTING_ENVIRONMENT = "JENKINS"
-        PRODUCTION_ENVIRONMENT = "MAHIDHAR"
-    }
-    
     stages {
         stage('Build') {
             steps {
-                echo "Fetching the source code from the directory path specified by the environment variable: ${DIRECTORY_PATH}"
-                echo "Compiling the code and generating any necessary artifacts..."
+                echo 'Building the code using Maven'
+                // Placeholder for Maven build command
             }
         }
-        stage('Test') {
+        stage('Unit and Integration Tests') {
             steps {
-                echo "Running unit tests..."
-                echo "Running integration tests..."
+                echo 'Running unit tests'
+                // Placeholder for running unit tests
+                echo 'Running integration tests'
+                // Placeholder for running integration tests
             }
         }
-        stage('Code Quality Check') {
+        stage('Code Analysis') {
             steps {
-                echo "Checking the quality of the code..."
+                echo 'Performing code analysis'
+                // Placeholder for code analysis tool integration (e.g., SonarQube)
             }
         }
-        stage('Deploy') {
+        stage('Security Scan') {
             steps {
-                echo "Deploying the application to a testing environment specified by the environment variable: ${TESTING_ENVIRONMENT}"
+                echo 'Performing security scan'
+                // Placeholder for security scan tool integration (e.g., OWASP ZAP)
             }
         }
-        stage('Approval') {
+        stage('Deploy to Staging') {
             steps {
-                echo "Waiting for manual approval..."
-                sleep(time: 10, unit: 'SECONDS')
+                echo 'Deploying to staging server (AWS EC2)'
+                // Placeholder for deployment to staging
+            }
+        }
+        stage('Integration Tests on Staging') {
+            steps {
+                echo 'Running integration tests on staging'
+                // Placeholder for running integration tests on staging
             }
         }
         stage('Deploy to Production') {
             steps {
-                echo "Deploying the code to the production environment (${PRODUCTION_ENVIRONMENT})..."
+                echo 'Deploying to production server (AWS EC2)'
+                // Placeholder for deployment to production
             }
         }
     }
-}
+    
     post {
-        always {
-            // Send email notifications after pipeline execution
+        success {
             emailext body: "Pipeline ${currentBuild.result}: ${env.BUILD_URL}",
                      subject: "Pipeline ${currentBuild.result}: ${env.JOB_NAME}",
-                     to: 's222315268@deakin.edu.au, mnalamaru4@gmail.com'
+                     to: 'your@email.com'
+        }
+        failure {
+            emailext body: "Pipeline ${currentBuild.result}: ${env.BUILD_URL}",
+                     subject: "Pipeline ${currentBuild.result}: ${env.JOB_NAME}",
+                     to: 'mnalamaru4@gmail.com, s222315268@deakin.edu.au'
         }
     }
 }
