@@ -16,21 +16,48 @@ pipeline {
                 // Placeholder for running integration tests
             }
         }
-        // Other stages...
+        stage('Code Analysis') {
+            steps {
+                echo 'Performing code analysis using sonarqube'
+                // Placeholder for code analysis tool integration (e.g., SonarQube)
+            }
+        }
+        stage('Security Scan') {
+            steps {
+                echo 'Performing security scan using OWASP'
+                // Placeholder for security scan tool integration (e.g., OWASP ZAP)
+            }
+        }
+        stage('Deploy to Staging') {
+            steps {
+                echo 'Deploying to staging server (AWS EC2)'
+                // Placeholder for deployment to staging
+            }
+        }
+        stage('Integration Tests on Staging') {
+            steps {
+                echo 'Running integration tests on staging'
+                // Placeholder for running integration tests on staging
+            }
+        }
+        stage('Deploy to Production') {
+            steps {
+                echo 'Deploying to production server (AWS EC2)'
+                // Placeholder for deployment to production
+            }
+        }
     }
     
     post {
         success {
-            // Send email notifications after successful pipeline execution
             emailext body: "Pipeline ${currentBuild.result}: ${env.BUILD_URL}",
                      subject: "Pipeline ${currentBuild.result}: ${env.JOB_NAME}",
                      to: 'mnalamaru4@gmail.com'
         }
         failure {
-            // Send email notifications after failed pipeline execution
             emailext body: "Pipeline ${currentBuild.result}: ${env.BUILD_URL}",
                      subject: "Pipeline ${currentBuild.result}: ${env.JOB_NAME}",
-                     to: 'mnalamru4@gmail.com'
+                     to: 'mnalamaru4@gmail.com'
         }
     }
 }
