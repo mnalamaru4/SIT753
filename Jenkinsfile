@@ -1,51 +1,48 @@
 pipeline {
     agent any
     
+    environment {
+        DIRECTORY_PATH = "/path/to/code"
+        TESTING_ENVIRONMENT = "JENKINS"
+        PRODUCTION_ENVIRONMENT = "MAHIDHAR"
+    }
+    
     stages {
         stage('Build') {
             steps {
-                // Build your code using Maven
-               
+                echo "Fetching the source code from the directory path specified by the environment variable: ${DIRECTORY_PATH}"
+                echo "Compiling the code and generating any necessary artifacts..."
             }
         }
-        stage('Unit Tests') {
+        stage('Test') {
             steps {
-                // Run unit tests using Maven
-                
+                echo "Running unit tests..."
+                echo "Running integration tests..."
             }
         }
-        stage('Integration Tests') {
+        stage('Code Quality Check') {
             steps {
-                script {
-                    // Run integration tests using Selenium WebDriver and TestNG
-                    echo 'Running Integration Tests'
-                 
-                }
+                echo "Checking the quality of the code..."
             }
         }
-        stage('Deploy to Staging') {
+        stage('Deploy') {
             steps {
-                // Deploy your application to staging environment (AWS EC2)
-                
+                echo "Deploying the application to a testing environment specified by the environment variable: ${TESTING_ENVIRONMENT}"
             }
         }
-        stage('Integration Tests on Staging') {
+        stage('Approval') {
             steps {
-                // Run integration tests on staging environment using Selenium WebDriver and TestNG
-                script {
-                    echo 'Running Integration Tests on Staging'
-                    
-                }
+                echo "Waiting for manual approval..."
+                sleep(time: 10, unit: 'SECONDS')
             }
         }
         stage('Deploy to Production') {
             steps {
-                // Deploy your application to production environment (AWS EC2)
-             
+                echo "Deploying the code to the production environment (${PRODUCTION_ENVIRONMENT})..."
             }
         }
     }
-    
+}
     post {
         always {
             // Send email notifications after pipeline execution
