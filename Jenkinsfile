@@ -8,7 +8,7 @@ pipeline {
                     echo 'Building the code using Maven'
                     // Placeholder for Maven build command
                     // Capture console output
-                    def buildLog = sh(script: 'mvn clean install', returnStdout: true)
+                    def buildLog = bat(script: 'mvn clean install', returnStdout: true)
                     echo "Build Log:\n${buildLog}"
                 }
             }
@@ -22,7 +22,7 @@ pipeline {
                     echo 'Running integration tests'
                     // Placeholder for running integration tests
                     // Capture console output
-                    def testLog = sh(script: 'mvn test && mvn integration-test', returnStdout: true)
+                    def testLog = bat(script: 'mvn test && mvn integration-test', returnStdout: true)
                     echo "Test Log:\n${testLog}"
                 }
             }
