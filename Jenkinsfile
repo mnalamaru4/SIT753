@@ -4,61 +4,37 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Building the code using Maven'
-                // Placeholder for Maven build command
+                script {
+                    echo 'Building the code using Maven'
+                    // Placeholder for Maven build command
+                    // Capture console output
+                    def buildLog = sh(script: 'mvn clean install', returnStdout: true)
+                    echo "Build Log:\n${buildLog}"
+                }
             }
         }
         stage('Unit and Integration Tests') {
             steps {
-                echo 'Running unit tests'
-                // Placeholder for running unit tests
-                echo 'Running integration tests'
-                // Placeholder for running integration tests
+                script {
+                    echo 'Running unit tests'
+                    // Placeholder for running unit tests
+                    echo 'Running integration tests'
+                    // Placeholder for running integration tests
+                    // Capture console output
+                    def testLog = sh(script: 'mvn test && mvn integration-test', returnStdout: true)
+                    echo "Test Log:\n${testLog}"
+                }
             }
         }
-        stage('Code Analysis') {
-            steps {
-                echo 'Performing code analysis'
-                // Placeholder for code analysis tool integration (e.g., SonarQube)
-            }
-        }
-        stage('Security Scan') {
-            steps {
-                echo 'Performing security scan'
-                // Placeholder for security scan tool integration (e.g., OWASP ZAP)
-            }
-        }
-        stage('Deploy to Staging') {
-            steps {
-                echo 'Deploying to staging server (AWS EC2)'
-                // Placeholder for deployment to staging
-            }
-        }
-        stage('Integration Tests on Staging') {
-            steps {
-                echo 'Running integration tests on staging'
-                // Placeholder for running integration tests on staging
-            }
-        }
-        stage('Deploy to Production') {
-            steps {
-                echo 'Deploying to production server (AWS EC2)'
-                // Placeholder for deployment to production
-            }
-        }
+        // Other stages...
     }
     
-   post {
-    success {
-        emailext body: "Pipeline ${currentBuild.result}: ${env.BUILD_URL}",
-                 subject: "Pipeline ${currentBuild.result}: ${env.JOB_NAME}",
-                 to: 'mnalamaru4@gmail.com'
+    post {
+        always {
+            // Send email notifications after pipeline execution
+            emailext body: "Pipeline ${currentBuild.result}: ${env.BUILD_URL}\n\n${currentBuild.rawBuild.getLog(100)}",
+                     subject: "Pipeline ${currentBuild.result}: ${env.JOB_NAME}",
+                     to: 'mnalamaru4@gmail.com'
+        }
     }
-    failure {
-        emailext body: "Pipeline ${currentBuild.result}: ${env.BUILD_URL}",
-                 subject: "Pipeline ${currentBuild.result}: ${env.JOB_NAME}",
-                 to: 'mnalamaru4@gmail.com'
-    }
-}
-
 }
