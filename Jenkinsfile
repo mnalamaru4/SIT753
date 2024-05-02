@@ -4,53 +4,54 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                script {
-                    echo 'Building the code using Maven'
-                    sh 'mvn clean install'
-                }
+                // Build your code using Maven
+                sh 'mvn clean install'
             }
         }
-        stage('Unit and Integration Tests') {
+        stage('Unit Tests') {
+            steps {
+                // Run unit tests using Maven
+                sh 'mvn test'
+            }
+        }
+        stage('Integration Tests') {
             steps {
                 script {
-                    echo 'Running unit tests'
-                    sh 'mvn test'
-                    echo 'Running integration tests'
-                    sh 'mvn integration-test'
+                    // Run integration tests using Selenium WebDriver and TestNG
+                    echo 'Running Integration Tests'
+                    sh 'mvn clean test -Dtest=IntegrationTest'
                 }
             }
         }
         stage('Deploy to Staging') {
             steps {
-                script {
-                    echo 'Deploying to Staging (AWS EC2)'
-                    // Command to deploy to AWS EC2
-                }
+                // Deploy your application to staging environment (AWS EC2)
+                sh 'aws ec2 deploy ...'
             }
         }
         stage('Integration Tests on Staging') {
             steps {
+                // Run integration tests on staging environment using Selenium WebDriver and TestNG
                 script {
                     echo 'Running Integration Tests on Staging'
-                    // Command to run integration tests on staging
+                    sh 'mvn clean test -Dtest=StagingIntegrationTest'
                 }
             }
         }
         stage('Deploy to Production') {
             steps {
-                script {
-                    echo 'Deploying to Production (AWS EC2)'
-                    // Command to deploy to production AWS EC2
-                }
+                // Deploy your application to production environment (AWS EC2)
+                sh 'aws ec2 deploy ...'
             }
         }
     }
     
     post {
         always {
+            // Send email notifications after pipeline execution
             emailext body: "Pipeline ${currentBuild.result}: ${env.BUILD_URL}",
                      subject: "Pipeline ${currentBuild.result}: ${env.JOB_NAME}",
-                     to: 'mnalamaru4@gmail.com'
+                     to: 'your@email.com'
         }
     }
 }
