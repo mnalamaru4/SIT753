@@ -1,53 +1,56 @@
 pipeline {
     agent any
     
-    environment {
-        DIRECTORY_PATH = "/path/to/code"
-        TESTING_ENVIRONMENT = "JENKINS"
-        PRODUCTION_ENVIRONMENT = "MAHIDHAR"
-    }
-    
     stages {
         stage('Build') {
             steps {
-                echo "Fetching the source code from the directory path specified by the environment variable: ${DIRECTORY_PATH}"
-                echo "Compiling the code and generating any necessary artifacts..."
+                script {
+                    echo 'Building the code using Maven'
+                    sh 'mvn clean install'
+                }
             }
         }
-        stage('Test') {
+        stage('Unit and Integration Tests') {
             steps {
-                echo "Running unit tests..."
-                echo "Running integration tests..."
+                script {
+                    echo 'Running unit tests'
+                    sh 'mvn test'
+                    echo 'Running integration tests'
+                    sh 'mvn integration-test'
+                }
             }
         }
-        stage('Code Quality Check') {
+        stage('Deploy to Staging') {
             steps {
-                echo "Checking the quality of the code..."
+                script {
+                    echo 'Deploying to Staging (AWS EC2)'
+                    // Command to deploy to AWS EC2
+                }
             }
         }
-        stage('Deploy') {
+        stage('Integration Tests on Staging') {
             steps {
-                echo "Deploying the application to a testing environment specified by the environment variable: ${TESTING_ENVIRONMENT}"
-            }
-        }
-        stage('Approval') {
-            steps {
-                echo "Waiting for manual approval..."
-                sleep(time: 10, unit: 'SECONDS')
+                script {
+                    echo 'Running Integration Tests on Staging'
+                    // Command to run integration tests on staging
+                }
             }
         }
         stage('Deploy to Production') {
             steps {
-                echo "Deploying the code to the production environment (${PRODUCTION_ENVIRONMENT})..."
+                script {
+                    echo 'Deploying to Production (AWS EC2)'
+                    // Command to deploy to production AWS EC2
+                }
             }
         }
     }
-}
-post {
-    always {
-        emailext subject: "Pipeline Status - ${currentBuild.result}",
-                  body: "The pipeline status is: ${currentBuild.result}",
-                  to: "s222315268@deakin.edu.au",
-                  attachLog: true
+    
+    post {
+        always {
+            emailext body: "Pipeline ${currentBuild.result}: ${env.BUILD_URL}",
+                     subject: "Pipeline ${currentBuild.result}: ${env.JOB_NAME}",
+                     to: 'mnalamaru4@gmail.com'
+        }
     }
 }
