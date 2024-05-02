@@ -13,6 +13,7 @@ pipeline {
                 }
             }
         }
+    }
         stage('Unit and Integration Tests') {
             steps {
                 script {
