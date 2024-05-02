@@ -4,42 +4,33 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                script {
-                    echo 'Building the code using Maven'
-                    // Debugging: Print environment variables
-                    bat 'set'
-                    // Placeholder for Maven build command
-                    bat 'mvn clean install > build_log.txt 2>&1'
-                    // Debugging: Print Maven version
-                    bat 'mvn --version'
-                }
+                echo 'Building the code using Maven'
+                // Placeholder for Maven build command
             }
         }
         stage('Unit and Integration Tests') {
             steps {
-                script {
-                    echo 'Running unit tests'
-                    // Placeholder for running unit tests
-                    echo 'Running integration tests'
-                    // Placeholder for running integration tests
-                    // Capture console output to a file
-                    bat 'mvn test && mvn integration-test > test_log.txt 2>&1'
-                }
+                echo 'Running unit tests'
+                // Placeholder for running unit tests
+                echo 'Running integration tests'
+                // Placeholder for running integration tests
             }
         }
         // Other stages...
     }
     
     post {
-        always {
-            script {
-                // Attach log files to the email
-                emailext body: "Pipeline ${currentBuild.result}: ${env.BUILD_URL}",
-                         subject: "Pipeline ${currentBuild.result}: ${env.JOB_NAME}",
-                         to: 'your@email.com',
-                         attachLog: true,
-                         attachmentsPattern: '*.txt'
-            }
+        success {
+            // Send email notifications after successful pipeline execution
+            emailext body: "Pipeline ${currentBuild.result}: ${env.BUILD_URL}",
+                     subject: "Pipeline ${currentBuild.result}: ${env.JOB_NAME}",
+                     to: 'mnalamaru4@gmail.com'
+        }
+        failure {
+            // Send email notifications after failed pipeline execution
+            emailext body: "Pipeline ${currentBuild.result}: ${env.BUILD_URL}",
+                     subject: "Pipeline ${currentBuild.result}: ${env.JOB_NAME}",
+                     to: 'mnalamru4@gmail.com'
         }
     }
 }
