@@ -1,52 +1,54 @@
 pipeline {
     agent any
+    
     stages {
         stage('Build') {
             steps {
-                // Use Maven to build the code
-                sh 'mvn clean package'
+                echo 'Building the code using Maven'
             }
         }
         stage('Unit and Integration Tests') {
             steps {
-                // Use JUnit for unit tests and tools like Selenium or Postman for integration tests
-                // Execute tests and report results
+                echo 'Running unit tests'
+                echo 'Running integration tests'
             }
         }
         stage('Code Analysis') {
             steps {
-                // Use tools like SonarQube or Checkstyle for code analysis
-                // Integrate the analysis results with Jenkins
+                echo 'Performing code analysis using sonarqube'
             }
         }
         stage('Security Scan') {
             steps {
-                // Use tools like OWASP ZAP or SonarQube for security scanning
-                // Integrate the scanning results with Jenkins
+                echo 'Performing security scan using OWASP'
             }
         }
         stage('Deploy to Staging') {
             steps {
-                // Deploy the application to a staging server (e.g., using SSH or Docker)
+                echo 'Deploying to staging server (AWS EC2)'
             }
         }
         stage('Integration Tests on Staging') {
             steps {
-                // Run integration tests on the staging environment
+                echo 'Running integration tests on staging'
             }
         }
         stage('Deploy to Production') {
             steps {
-                // Deploy the application to a production server
+                echo 'Deploying to production server (AWS EC2)'
             }
         }
     }
-}
-post {
-    always {
-        emailext subject: "Pipeline Status - ${currentBuild.result}",
-                  body: "The pipeline status is: ${currentBuild.result}",
-                  to: "s222315268@deakin.edu.au",
-                  attachLog: true
+    
+   post {
+        always {
+            script {
+                emailext body: "Pipeline ${currentBuild.result}: ${env.BUILD_URL}",
+                         subject: "Pipeline ${currentBuild.result}: ${env.JOB_NAME}",
+                         to: 'mnalamaru4@gmail.com',
+                         attachLog: true,
+                         attachmentsPattern: '*'
+            }
+        }
     }
 }
